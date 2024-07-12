@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="generator" content="pandoc" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+	<meta name="author" content="Matteo Nicoli" />
+	<meta name="dcterms.date" content="2024-04-23" />
+	<title>ADF - Agriculture Data Format v1</title>
+	<link rel="stylesheet" href="format.css">
+</head>
+
+<body>
+	<header id="title-block-header">
+		<h1 class="title">ADF – Agriculture Data Format v1</h1>
+		<p class="author">Matteo Nicoli</p>
+		<p class="date">April 23, 2024</p>
+	</header>
+	<p>Questo documento definisce le specifiche del formato <em>Agriculture
+			Data Format</em> (from now on ADF). Queste specifiche, e
+		l’implementazione di questo formato fanno parte del progetto Terius.</p>
+	<p>L’obiettivo ultimo di questo progetto è sistematizzare la conoscenza
+		agricola, in maniera tale da dare un boost all’automazione nell’ambito
+		della ricerca agronomica e edelle agrotecnologie. Il formato che qui
+		specifichiamo è il primo e più fondamentale risultato del progetto
+		Terius. Building this standard means laying the foundation stone for an
+		IT revolution in agriculture. ADF will be to the automation of
+		agriculture what UNICODE was to the digitization of writing and HTML was
+		to the Web.</p>
+	<h4 id="goals"><strong>Goals</strong></h4>
+	<p>Per raggiungere l’obiettivo a lungo termine di cui abbiamo parlato
+		sopra, è necessario scomporlo e svilupparlo in obiettivi più piccoli.
+		Qui ci concentreremo su quelli che riguardano il formato ADF.</p>
+	<ul>
+		<li>
+			<p>Rendere facilmente serializzabili i dati relativi alle
+				colture.</p>
+		</li>
+		<li>
+			<p>Avere un formato che permetta di registrare delle serie di dati
+				relativi ad una coltura in modo che sia resi espliciti univocamente ed
+				esplicitamente i composti chimici utilizzati, le quantità e la frequenza
+				con cui vengono fatte le misurazioni.</p>
+		</li>
+		<li>
+			<p>Un formato con cui si possano fare analisi statistiche di varia
+				natura, in maniera automatica o semiautomatica.</p>
+		</li>
+		<li>
+			<p>Last, but not least, avere un formato che possa essere utilizzato
+				per istruire un algoritmo di machine learning in maniera agevole ed
+				efficiente. Questo implica che costruire uno standard per l’agricoltura
+				sara à probabilmente il modo migliore per far entrare l’AI nel mondo
+				delle agrotecnologie.</p>
+		</li>
+	</ul>
+	<h1 id="sec:intro">Introduction</h1>
+	<p>The idea is to develop an <em>open format</em> in which
+		agriculture-related data can be encoded. The format ADF will then be
+		used to be able to create files to save all the data related to the
+		parameters by which crops are grown. We mention here the main ones.</p>
+	<ol>
+		<li>
+			<p>Measurements related to irrigation;</p>
+		</li>
+		<li>
+			<p>Measurements related to temperature;</p>
+		</li>
+		<li>
+			<p>Measurements related to exposure to sunlight;</p>
+		</li>
+		<li>
+			<p>Measurements related to soil conditions (pH, density,
+				etc.);</p>
+		</li>
+		<li>
+			<p>Measurements related to additives (chemical compounds) in the
+				soil;</p>
+		</li>
+		<li>
+			<p>Measurements related to additives (chemical compounds) in the
+				atmosphere;</p>
+		</li>
+		<li>
+			<p>Frequency with which these measurements are taken (accurate to
+				the second).</p>
+		</li>
+	</ol>
+	<p>On the <em>Food and Agriculture Organization</em> (FAO) website there
+		are several pages dedicated to collecting crop data (e.g., <a
+			href="https://www.fao.org/land-water/databases-and-software/crop-information/wheat/en/">this
+			one</a>). As they are expressed, however, these data are difficult to
+		use by automated systems. Indeed, it is very difficult to use them to
+		build centralized databases, or to train machine learning algorithms.
+		The argument that applies to FAO also applies to other websites or
+		databases that handle this kind of data.</p>
+	<h2 id="subsec:glance">At a glance</h2>
+	<p>Consideriamo adesso la rapresentazione schematica della crescita di
+		una coltura che troviamo in Figure <a href="#fig:schema-series" data-reference-type="ref"
+			data-reference="fig:schema-series">1</a>. We
+		shall describe the details about how data is structured in the following
+		paragraphs. Per il momento è sufficiente capire ad alto livello il
+		formato e la sua struttura, e come ciascuna sezione intende
+		rappresentare un momento specifico della coltivazione di una pianta.</p>
+	<figure id="fig:schema-series">
+
+		<figcaption>An (over)simplified schema of a growing crop. It is useful
+			to show the high-level approach we are using to encode the information
+			concerning series and measurements.</figcaption>
+	</figure>
+	<p>Partiamo col dire che il formato ADF contiene l’informazione della
+		duarata totale della coltivazione in questione. La durata può essere
+		fatta partire al momento della semina, oppure anche prima, nel caso in
+		cui si abbia la necessità di preparare in qualche modo il suolo (e.g.
+		con additivi chimici). Questo periodo viene indicato in Figura con la
+		label di “soil prep”, ed il motivo per cui l’indicatore “start” è
+		tratteggiato, è che in molti casi “start” e “seed” potrebbero
+		coincidere. Allo stesso modo, solitamente la durata totale si conclude
+		con la raccolta, ma nulla vieta di interromperla prima (qualora i dati
+		che riteniamo rilevanti siano già stati interamente raccolti), o
+		addirittura dopo. Queste due eventualità non sono state rappresentate in
+		figura per motivi di sintesi.</p>
+	<p>Come si vede, questo periodo totale è suddiviso in <span class="math inline"><em>n</em></span> serie, <em>aventi
+			tutte la stessa
+			durata</em>. Ciascuna serie rappresenta un’unità di tempo – misurato in
+		secondi – in cui è suddiviso il tempo totale. Una durata molto comune
+		per una serie, ad esempio, è 86.400 secondi, cioè un giorno. Nella
+		Sezione <a href="#subsec:adf-series" data-reference-type="ref" data-reference="subsec:adf-series">2.4</a>
+		vedremo nel dettaglio quali
+		sono i range di valori ammessi, e quanto può essere flessibile questo
+		modo di rappresentare il tempo.</p>
+	<p>Ciascuna serie contine le misurazioni che sono state fatte nell’unità
+		di tempo che la serie stessa rappresenta. In particolare, si dividono in
+		2 macro-gruppi:</p>
+	<ul>
+		<li>
+			<p><em>Le misurazioni effettuate a intervalli regolari.</em> Queste
+				sono ad esempio la temperatura ed il consumo di acqua. Ciascuna serie è
+				divisa in <em>chunks</em>, ciascuno dei quali contiene una misurazione
+				della grandezza in questione. La divisione in chunks (come si vedrà
+				dettagliatamente in seguito) è da intendersi come una divisione <em>in
+					parti uguali</em>. Pertanto, avere una serie di 86.400 secondi (24h)
+				divisa in due chunks, significa che ciascuno dei due chunk rappresenta
+				un periodo di 12 ore, e dunque la misurazione ivi contenuta sarà la
+				misura <em>media</em> di quella grandezza in quel periodo.</p>
+		</li>
+		<li>
+			<p><em>Le misurazioni effettuate una sola volta.</em> Queste vengono
+				effettuate una volta per ogni serie. Non rappresenta necessariamente la
+				media delle misurazioni fatte all’interno della serie; potrebbe
+				rappresentare anche la mediana, o una qualche altra elaborazione
+				statistica.</p>
+		</li>
+	</ul>
+	<p>Ciascuna serie contiene poi altri dati relativi allo stato della
+		coltura e della sua crescita, che però non sono rappresentati nella
+		Figura <a href="#fig:schema-series" data-reference-type="ref" data-reference="fig:schema-series">1</a> per
+		motivi di spazio. Se ne
+		parlerà nel dettaglio nella Sezione <a href="#subsec:adf-series" data-reference-type="ref"
+			data-reference="subsec:adf-series">2.4</a>.</p>
+	<h1 id="sec:data">Data representation</h1>
+	<p>All data structures that require more than one byte to be
+		represented, are stored, in network byte order, i.e. big-endian, where
+		most significant bytes come first. Dove non espressamente specificato,
+		si intendono gli integer come unsigned -byte integers, and floating
+		point numbers as IEEE 754 32-bit base-2 floating-point numbers. In Table
+		<a href="#tab:data-types" data-reference-type="ref" data-reference="tab:data-types">1</a> there is a list of the
+		abbreviation used in the following pages.
+	</p>
+	<div id="tab:data-types">
+		<table>
+			<caption></caption>
+			<thead>
+				<tr>
+					<th style="text-align: left;">code</th>
+					<th style="text-align: left;">description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: left;">UI</td>
+					<td style="text-align: left;">1-byte unsigned integer</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">2-byte unsigned integer</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">UI4</td>
+					<td style="text-align: left;">4-byte unsigned integer</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">F</td>
+					<td style="text-align: left;">IEEE 754 4-byte base-2 floating-point</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">ADDT</td>
+					<td style="text-align: left;">6-byte structure composed by UI2 + F</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h2 id="subsec:file-structure">File structure</h2>
+	<p>For what concerns the structure, ADF is composed by a 22-byte header
+		(ADFHDR), a metadata chunk (ADFMTA), and possibly <span class="math inline"><em>n</em></span> series (ADFSRS),
+		with <span class="math inline"><em>n</em> ≥ 0</span>. L’header contiene tutti i
+		metadati costanti, quelli cioè indipendenti dal numero delle serie e dal
+		loro contenuto. I dati presenti nell’header, non possono dunque cambiare
+		a seguito di un’operazione di inserimento, di rimozione o di update. Al
+		contrario, i dati immagazzinati nella sezione metadata sono variabili,
+		dipendono cioè adl numero e dal contenuto delle serie. Possiamo
+		osservare nello schema in Figura <a href="#fig:structure" data-reference-type="ref"
+			data-reference="fig:structure">2</a></p>
+	<figure id="fig:structure">
+
+		<figcaption>This diagram shows the structure of an ADF file. The first
+			two chunks starting from the left are drawn with solid border because
+			they are mandatory, while the entire series section is composed by
+			dotted chunks, because they may not be present.</figcaption>
+	</figure>
+	<p>Come accennato nell’introduzione, e come si può facilmente osservere
+		nella Figura <a href="#fig:structure" data-reference-type="ref" data-reference="fig:structure">2</a>, tutte le
+		serie hanno la stessa
+		lunghezza. La ragione di questo – lo ricordiamo – è che ciascuna di esse
+		rappresenta un <em>intervallo periodico</em>. Diremo di più su questo
+		nella Sezione <a href="#subsec:adf-series" data-reference-type="ref" data-reference="subsec:adf-series">2.4</a>.
+	</p>
+	<h2 id="subsec:adf-header">ADFHDR – ADF Header</h2>
+	<p>Each ADF file contains a 22-byte header, divided as shown in Table <a href="#tab:header-fields"
+			data-reference-type="ref" data-reference="tab:header-fields">2</a>. The header contains all those
+		data that remains immatable through all the series recorded.</p>
+	<div id="tab:header-fields">
+		<table>
+			<caption></caption>
+			<thead>
+				<tr>
+					<th style="text-align: left;">chunk</th>
+					<th style="text-align: left;">type</th>
+					<th style="text-align: left;">content</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>s</em></span></td>
+					<td style="text-align: left;">UI4</td>
+					<td style="text-align: left;">signature</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>v</em></span></td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">version</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>f</em><em>t</em></span></td>
+					<td style="text-align: left;">UI</td>
+					<td style="text-align: left;">farming technique</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>ω</em></span></td>
+					<td style="text-align: left;">UI</td>
+					<td style="text-align: left;">statistical procedure applied to reduce
+						data</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>n</em><sub><em>w</em><em>l</em></sub></span></td>
+					<td style="text-align: left;">UI4</td>
+					<td style="text-align: left;">number of wavelengths</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline">min (<em>W</em><sub><em>l</em></sub>)</span>
+					</td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">minimum wavelength in nanometers</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline">max (<em>W</em><sub><em>l</em></sub>)</span>
+					</td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">maximum wavelength in nanometers</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>n</em><sub><em>c</em></sub></span></td>
+					<td style="text-align: left;">UI4</td>
+					<td style="text-align: left;">number of chunks</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>c</em><em>r</em><em>c</em>_<em>h</em><em>e</em><em>a</em><em>d</em><em>e</em><em>r</em></span>
+					</td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">CRC-16 calculated on header bytes</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h4 id="signature"><strong>Signature</strong></h4>
+	<p>The first four bytes of any ADF file always contain the four
+		(hexadecimal) bytes 0x40 0x41 0x44 0x46, that corresponds to the string
+		“<code>@ADF</code>”.</p>
+	<h4 id="version"><strong>Version</strong></h4>
+	<p>Represented as a 2 byte usigned integer. The most significant byte
+		contains the major version, while the least significant the minor. In
+		Figure <a href="#fig:version" data-reference-type="ref" data-reference="fig:version">3</a> we can see how it’s
+		stored the
+		version 0.1.</p>
+	<figure id="fig:version">
+
+		<figcaption></figcaption>
+	</figure>
+	<h4 id="farming-technique"><strong>Farming technique</strong></h4>
+	<p>A 1-byte unsigned integer is dedicated to encode the farming
+		technique use to grow the crop. Allowed values are presented in Table <a href="#tab:farming-technique-consts"
+			data-reference-type="ref" data-reference="tab:farming-technique-consts">3</a>.</p>
+	<div id="tab:farming-technique-consts">
+		<table>
+			<caption>A sample of the allowed values.</caption>
+			<tbody>
+				<tr>
+					<td style="text-align: center;">0x00</td>
+					<td style="text-align: left;">Regular</td>
+					<td style="text-align: center;">0x01</td>
+					<td style="text-align: left;">Indoor</td>
+					<td style="text-align: center;">0x02</td>
+					<td style="text-align: left;">Indoor protected</td>
+					<td style="text-align: center;">0x03</td>
+					<td style="text-align: left;">Outdoor</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">0x10</td>
+					<td style="text-align: left;">Artificial</td>
+					<td style="text-align: center;">0x11</td>
+					<td style="text-align: left;"></td>
+					<td style="text-align: center;"></td>
+					<td style="text-align: left;"></td>
+					<td style="text-align: center;"></td>
+					<td style="text-align: left;"></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">0x20</td>
+					<td style="text-align: left;">Hydroponics</td>
+					<td style="text-align: center;">0x21</td>
+					<td style="text-align: left;">Anthroponics</td>
+					<td style="text-align: center;"></td>
+					<td style="text-align: left;"></td>
+					<td style="text-align: center;"></td>
+					<td style="text-align: left;"></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">0x30</td>
+					<td style="text-align: left;">Aeroponics</td>
+					<td style="text-align: center;">0x31</td>
+					<td style="text-align: left;">Fogponics</td>
+					<td style="text-align: center;"></td>
+					<td style="text-align: left;"></td>
+					<td style="text-align: center;"></td>
+					<td style="text-align: left;"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<p>This field must contain a value in the range 0x00 – 0xFF. Farming
+		technique value also contains a hierarchical classification. For
+		instance, consider the first row of Table <a href="#tab:farming-technique-consts" data-reference-type="ref"
+			data-reference="tab:farming-technique-consts">3</a>. The most
+		significant byte contains the parent category, while the least
+		significant up to 16 children. It could be visually represented as
+		follows:</p>
+	<ul>
+		<li>
+			<p>Regular</p>
+			<ul>
+				<li>
+					<p>Indoor</p>
+				</li>
+				<li>
+					<p>Indoor protected</p>
+				</li>
+				<li>
+					<p>Outdoor</p>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	<p>Thus, we have enough space for 16 categories (0 to 15) with 16
+		subcategories each (0 to 15).</p>
+	<hr />
+	<p><strong><em>Note</em></strong>: Table <a href="#tab:farming-technique-consts" data-reference-type="ref"
+			data-reference="tab:farming-technique-consts">3</a> is just a draft.
+		Once we have a solid classification of the farming techniques, we will
+		add an appendix with the complete list.</p>
+	<hr />
+	<h4 id="wavelengths"><strong>Wavelengths</strong></h4>
+	<p>Information concerning light exposure are encoded in the header with
+		three 4-byte unsigned integers: <span class="math inline"><em>n</em><sub><em>w</em><em>l</em></sub></span>,
+		<span class="math inline">min (<em>W</em><sub><em>l</em></sub>)</span>,
+		and <span class="math inline">max (<em>W</em><sub><em>l</em></sub>)</span>. Where
+		<span class="math inline">min (<em>W</em><sub><em>l</em></sub>)</span>
+		is the lower bound of the light spectrum we are considering, <span
+			class="math inline">max (<em>W</em><sub><em>l</em></sub>)</span> is the
+		upper. The spectrum between <span class="math inline">min (<em>W</em><sub><em>l</em></sub>)</span> and
+		<span class="math inline">max (<em>W</em><sub><em>l</em></sub>)</span>
+		is divided in <span class="math inline"><em>n</em><sub><em>w</em><em>l</em></sub></span>
+		intervals. This allow us to encode the spectrum with arbitrary
+		precision.
+	</p>
+	<figure id="fig:wavelengths">
+
+		<figcaption>Here is an example of a wavelength spectrum with <span
+				class="math inline">min (<em>W</em><sub><em>l</em></sub>) = 350 nm</span>,
+			<span class="math inline">max (<em>W</em><sub><em>l</em></sub>) = 1, 050 nm</span>,
+			and <span class="math inline"><em>n</em><sub><em>w</em><em>l</em></sub> = 14</span>.
+			Each spectrum interval represents a <span class="math inline">50 nm</span> range. Each <span
+				class="math inline"><em>w</em><em>l</em><sub><em>i</em></sub></span>
+			contains a 4-byte floating point number that represents the light
+			radiation measured in <span class="math inline">W/m<sup>2</sup></span>.
+		</figcaption>
+	</figure>
+	<h4 id="number-of-chunks"><strong>Number of chunks</strong></h4>
+	<p>It represents the number of measurements for each series.</p>
+	<h4 id="statistical-elaboration"><strong>Statistical
+			elaboration</strong></h4>
+	<p>It represents the way data is aggregated within the series.
+		Idealmente, ad ogni chunk dovrebbe corrispondere una misurazione, ma nel
+		caso di misure troppo reiterate, questo porterebbe ad un inutile
+		appesantimento del file. Consideriamo ad esempio un sensore di
+		temperatura di una serra, che effettual la misurazione una volta al
+		secondo. Se abbiamo serie della durata di 24h, per ogni serie avremo
+		86.400 misure di temperatura, la maggior parte delle quali inutili. È
+		quindi possibile aggregare questi dati nella maniera specificata dal
+		campo <span class="math inline"><em>ω</em></span> nell’header, in modo
+		tale che si possa condensare il maggior numero di informazioni possibile
+		nel minor numero di serie.</p>
+	<figure id="fig:chunks">
+
+		<figcaption>Questo grafico rappresenta la misurazione della temperatura
+			del suolo (tra 0 e 8 cm di profondità) a London, Ontario. La serie viola
+			contiene i dati presi dai sensori una volta all’ora. La serie verde,
+			invece, divide le misurazioni in tre gruppi da 8 ciascuno (numerati in
+			basso) e calcola per ciascuno la media aritmentica. Fonte:
+			…</figcaption>
+	</figure>
+	<p>In Figura <a href="#fig:chunks" data-reference-type="ref" data-reference="fig:chunks">5</a>, si può ottenere un
+		andamento di
+		temperatura fedele anche utilizzando la comune media aritmetica. Per
+		risultati più precisi, ovviamente, è consigliabile utilizzare
+		metodologie statistiche più sofisticate. Comunque, anche nel semplice
+		caso rappresentato qui, si può chiaramente intuire come questo formato
+		possa codificare con una precisione inedita fino ad ora informazioni
+		ripetitive.</p>
+	<h2 id="subsec:adf-meta">ADFMTA – ADF Metadata</h2>
+	<p>Passiamo ora alle specifiche riguardanti la sezione ADFMTA. Come
+		abbiamo anticipato nella Sezione <a href="#sec:intro" data-reference-type="ref"
+			data-reference="sec:intro">1</a>, all’interno
+		della sezione ADFMTA sono contenuti i metadati <em>non costanti</em>,
+		come ad esempio il numero delle serie, il periodo complessivo (che
+		dipende dal numero delle serie) e i codici degli additivi. Ogni
+		qualvolta si eseguono operazioni che riguardano le serie, è necessario
+		aggiornare anche i metadati, nella maniera dettagliatamente descritta
+		nella Sezione <a href="#sec:operations" data-reference-type="ref" data-reference="sec:operations">3</a>.</p>
+	<p>I campi contenuti nella sezione ADFMTA sono rappresentati nella Table
+		<a href="#tab:meta-fields" data-reference-type="ref" data-reference="tab:meta-fields">4</a> con le relative
+		dimesioni in
+		byte.
+	</p>
+	<div id="tab:meta-fields">
+		<table>
+			<caption></caption>
+			<thead>
+				<tr>
+					<th style="text-align: left;">chunk</th>
+					<th style="text-align: left;">type</th>
+					<th style="text-align: left;">content</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>n</em><sub><em>s</em></sub></span></td>
+					<td style="text-align: left;">UI4</td>
+					<td style="text-align: left;">size of the series array</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>p</em></span></td>
+					<td style="text-align: left;">UI4</td>
+					<td style="text-align: left;">period measured in seconds</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>n</em><sub><em>a</em><em>d</em><em>d</em></sub></span></td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">number of both soil and atmosphere
+						nutrients in catalogue</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>a</em><em>d</em><em>d</em><em>i</em><em>t</em><em>i</em><em>v</em><em>e</em><em>s</em></span>
+					</td>
+					<td style="text-align: left;"><span
+							class="math inline">UI4 × <em>n</em><sub><em>a</em><em>d</em><em>d</em></sub></span></td>
+					<td style="text-align: left;">An array containing the additives’
+						codes</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>c</em><em>r</em><em>c</em>_<em>m</em><em>e</em><em>t</em><em>a</em></span>
+					</td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">CRC-16 calculated on metdata bytes</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h4 id="series-size-mathbfn_s"><strong>Series size – <span
+				class="math inline"><strong>n</strong><sub><strong>s</strong></sub></span></strong></h4>
+	<p>is a 4-byte unsigned integer that represents the size of the series
+		array encoded in the file. This number can change when an operation on
+		the series is executed, see Section <a href="#sec:operations" data-reference-type="ref"
+			data-reference="sec:operations">3</a> for the
+		details.</p>
+	<hr />
+	<p><strong><em>Note</em></strong>: This number shouldn’t be confused
+		with the <em>number of the series</em>. Series size just refers to the
+		size of the series array, i.e. each series considered just once. As we
+		shall see below, series have a repeated field, that indicates the number
+		of consecutives series that are equal to each others.</p>
+	<hr />
+	<h4 id="period"><strong>Period</strong></h4>
+	<p>is a 4-byte unsigned integer that contains information on the
+		duration in seconds of each series. The series all have the same
+		duration. With the period we can easily calculate the total duration of
+		the encoded data is given by the total number of the series times the
+		period of each series (as you can see in the top half of Figure <a href="#fig:schema-series"
+			data-reference-type="ref" data-reference="fig:schema-series">1</a>).</p>
+	<h4 id="additives"><strong>Additives</strong></h4>
+	<p>One of the most crucial things that this format should be able to
+		encode are nutrients-related data. Those represents all the additives
+		(we shall use the word “nutrients” to indicate them as well) present
+		either in the soil or in the atmosphere. To ensure greater generality,
+		the code for each additive is contained in the ‘additives‘ array of the
+		metadata; in each array there will be indices of the corresponding
+		elements. This allows us to code the chemical elements indicated as
+		additives with any number of bytes large, decreasing redundancy. In our
+		case, the default code we use to designate each additive is the unique
+		ID of the <em>Chemical Entities of Biological Interest</em> (from now on
+		ChEBI) database. in Table <a href="#tab:nutrients" data-reference-type="ref"
+			data-reference="tab:nutrients">5</a> we can
+		see the code of some of the most common soil nutrients.</p>
+	<p>The field <span class="math inline"><em>n</em><sub><em>a</em><em>d</em><em>d</em></sub></span>
+		represents the size of the <span
+			class="math inline"><em>a</em><em>d</em><em>d</em><em>i</em><em>t</em><em>i</em><em>v</em><em>e</em><em>s</em></span>
+		array, which contains a unique code of each additive. As we said above,
+		each code represents univocally a chemical compound, with an arbitrary
+		ID. Any time a new series is added, it may contain a reference to a new
+		additives, that is not yet present in the array on the additives in the
+		metadata section. In this case, the function This array <em>must</em> be
+		updated in a conservative way, i.e. by pushing new elements at the end,
+		whitout changing the order of the previous..</p>
+	<div id="tab:nutrients">
+		<table>
+			<caption>A list of the 17 most common soil nutrients.</caption>
+			<tbody>
+				<tr>
+					<td colspan="3" style="text-align: center;">Macronutrients</td>
+					<td colspan="3" style="text-align: center;">Micronutrients</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">ChEBI ID</td>
+					<td style="text-align: left;">formula</td>
+					<td style="text-align: left;">IUPAC name</td>
+					<td style="text-align: center;">ChEBI ID</td>
+					<td style="text-align: left;">formula</td>
+					<td style="text-align: left;">IUPAC name</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">17632</td>
+					<td style="text-align: left;"><span class="math inline">[NO<sub>3</sub>]<sup>−</sup></span></td>
+					<td style="text-align: left;">Nitrate</td>
+					<td style="text-align: center;">29033</td>
+					<td style="text-align: left;"><span class="math inline">[Fe]<sup>2+</sup></span></td>
+					<td style="text-align: left;">Iron(2+) ion</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">28938</td>
+					<td style="text-align: left;"><span class="math inline">[NH<sub>4</sub>]<sup>+</sup></span></td>
+					<td style="text-align: left;">Ammonium ion</td>
+					<td style="text-align: center;">29034</td>
+					<td style="text-align: left;"><span class="math inline">[Fe]<sup>3+</sup></span></td>
+					<td style="text-align: left;">Iron(3+) ion</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">43474</td>
+					<td style="text-align: left;"><span class="math inline">[HPO<sub>4</sub>]<sup>2−</sup></span></td>
+					<td style="text-align: left;">Hydrogenphosphate</td>
+					<td style="text-align: center;">22908</td>
+					<td style="text-align: left;"><span class="math inline">[BO<sub>3</sub>]<sup>3−</sup></span></td>
+					<td style="text-align: left;">Borate</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">39745</td>
+					<td style="text-align: left;"><span
+							class="math inline">[H<sub>2</sub>PO<sub>4</sub>]<sup>−</sup></span></td>
+					<td style="text-align: left;">Dihydrogenphosphate</td>
+					<td style="text-align: center;">37255</td>
+					<td style="text-align: left;"><span class="math inline">[Zn]<sup>2+</sup></span></td>
+					<td style="text-align: left;">Zinc(1+) ion</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">29103</td>
+					<td style="text-align: left;"><span class="math inline">[K]<sup>+</sup></span></td>
+					<td style="text-align: left;">Potassium(1+) ion</td>
+					<td style="text-align: center;">49552</td>
+					<td style="text-align: left;"><span class="math inline">[Cu]<sup>+</sup></span></td>
+					<td style="text-align: left;">Copper(1+) ion</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">18420</td>
+					<td style="text-align: left;"><span class="math inline">[Mg]<sup>2+</sup></span></td>
+					<td style="text-align: left;">Magnesium(2+) ion</td>
+					<td style="text-align: center;">29036</td>
+					<td style="text-align: left;"><span class="math inline">[Cu]<sup>2+</sup></span></td>
+					<td style="text-align: left;">Copper(2+) ion</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">29108</td>
+					<td style="text-align: left;"><span class="math inline">[Ca]<sup>2+</sup></span></td>
+					<td style="text-align: left;">Calcium(2+) ion</td>
+					<td style="text-align: center;">29035</td>
+					<td style="text-align: left;"><span class="math inline">[Mn]<sup>2+</sup></span></td>
+					<td style="text-align: left;">Manganese(2+)</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">16189</td>
+					<td style="text-align: left;"><span class="math inline">[SO<sub>4</sub>]<sup>2−</sup></span></td>
+					<td style="text-align: left;">Sulfate</td>
+					<td style="text-align: center;">36264</td>
+					<td style="text-align: left;"><span class="math inline">[MoO<sub>4</sub>]<sup>2−</sup></span></td>
+					<td style="text-align: left;">Molybdate</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"></td>
+					<td style="text-align: left;"></td>
+					<td style="text-align: left;"></td>
+					<td style="text-align: center;">17996</td>
+					<td style="text-align: left;"><span class="math inline">[Cl]<sup>−</sup></span></td>
+					<td style="text-align: left;">Chloride</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h2 id="subsec:adf-series">ADFSRS – ADF Series</h2>
+	<p>As we saw in the general description in Section <a href="#sec:intro" data-reference-type="ref"
+			data-reference="sec:intro">1</a>, each ADFSRS
+		is independent of the others. In Table <a href="#tab:series-field" data-reference-type="ref"
+			data-reference="tab:series-field">6</a> we can
+		see the list of the fields of each ADFSRS chunk. We shall give a more
+		detailed description of each of them below.</p>
+	<div id="tab:series-field">
+		<table>
+			<caption></caption>
+			<thead>
+				<tr>
+					<th style="text-align: left;">chunk</th>
+					<th style="text-align: left;">type</th>
+					<th style="text-align: left;">content</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>i</em></span></td>
+					<td style="text-align: left;"><span
+							class="math inline">F × <em>n</em><sub><em>w</em><em>l</em></sub></span></td>
+					<td style="text-align: left;">the energy flux of light radiation
+						measured in <span class="math inline">W/m<sup>2</sup></span></td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>t</em></span></td>
+					<td style="text-align: left;"><span class="math inline">F × <em>n</em><sub><em>c</em></sub></span>
+					</td>
+					<td style="text-align: left;">average environmental temperature,
+						measured in <span class="math inline"><sup>∘</sup>C</span></td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>w</em></span></td>
+					<td style="text-align: left;"><span class="math inline">F × <em>n</em><sub><em>c</em></sub></span>
+					</td>
+					<td style="text-align: left;">water use measured in l</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>p</em><em>H</em></span></td>
+					<td style="text-align: left;">UI</td>
+					<td style="text-align: left;">average pH of the soil</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>ρ</em></span></td>
+					<td style="text-align: left;">F</td>
+					<td style="text-align: left;">average density of the soil measured in
+						<span class="math inline">kg/m<sup>3</sup></span>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>P</em></span></td>
+					<td style="text-align: left;">F</td>
+					<td style="text-align: left;">pressure measured in bar</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>n</em>_<em>a</em><em>d</em><em>d</em>_<em>s</em><em>o</em><em>i</em><em>l</em></span>
+					</td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">number of both soil nutrients</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>n</em>_<em>a</em><em>d</em><em>d</em>_<em>a</em><em>t</em><em>m</em></span>
+					</td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">number of both atmosphere nutrients</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>a</em><em>d</em><em>d</em><em>i</em><em>t</em><em>i</em><em>v</em><em>e</em><em>s</em><sub><em>s</em></sub></span>
+					</td>
+					<td style="text-align: left;"><span class="math inline">$\mathrm{ADD\textunderscore{}T{}}\times{}
+							n\_add\_soil$</span></td>
+					<td style="text-align: left;">an array that contains the nutrients in
+						the soil</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>a</em><em>d</em><em>d</em><em>i</em><em>t</em><em>i</em><em>v</em><em>e</em><em>s</em><sub><em>a</em></sub></span>
+					</td>
+					<td style="text-align: left;"><span class="math inline">$\mathrm{ADD\textunderscore{}T{}}\times{}
+							n\_add\_atm$</span></td>
+					<td style="text-align: left;">an array that contains the nutrients in
+						the atmosphere</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span class="math inline"><em>r</em></span></td>
+					<td style="text-align: left;">UI4</td>
+					<td style="text-align: left;">indicates how many consecutive times this
+						series is repeated</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;"><span
+							class="math inline"><em>c</em><em>r</em><em>c</em>_<em>s</em><em>e</em><em>r</em><em>i</em><em>e</em><em>s</em></span>
+					</td>
+					<td style="text-align: left;">UI2</td>
+					<td style="text-align: left;">CRC-16 calculated on each series’
+						bytes</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h1 id="sec:operations">Operations</h1>
+	<p>Qui di seguito verrà fornita una lista di funzioni che devono essere
+		esposte da ogni implementazione dello standard ADF. Nel corso del
+		paragrfo, verranno fornite le specifiche dettagliate circa il
+		funzionamento di ciascuna di queste funzioni.</p>
+	<ul>
+		<li>
+			<p><code>marshal</code>.</p>
+		</li>
+		<li>
+			<p><code>unmarshal</code>.</p>
+		</li>
+		<li>
+			<p><code>addseries</code>.</p>
+		</li>
+		<li>
+			<p><code>updateseries</code>.</p>
+		</li>
+		<li>
+			<p><code>removeseries</code>.</p>
+		</li>
+		<li>
+			<p><code>reindexseries</code>.</p>
+		</li>
+	</ul>
+	<p>We can read the details about their specification in the following
+		paragraphs.</p>
+	<p>Each of the functions listed above <em>must</em> include in its
+		returns datatype a 2-byte unsigned integer that represents the status
+		code. For a list of availables status code see Section <a href="#sec:codes" data-reference-type="ref"
+			data-reference="sec:codes">4</a></p>
+	<h2 id="subsec:additives">Additives</h2>
+	<h4 id="reindex"><strong>Reindex</strong></h4>
+	<h2 id="subsec:series">Series</h2>
+	<h4 id="add"><strong>Add</strong></h4>
+	<p>This function adds a new series at the end of the collection. If the
+		series you are trying to add is equal to the series</p>
+	<h4 id="remove"><strong>Remove</strong></h4>
+	<h4 id="update"><strong>Update</strong></h4>
+	<h1 id="sec:codes">Codes</h1>
+	<p>Status codes are unsigned 2-byte integer. They are used as return
+		value for</p>
+	<p>Error codes are expressed with a 2-byte unsigned integer. Table <a href="#tab:errors" data-reference-type="ref"
+			data-reference="tab:errors">7</a> contains a description of each
+		admissible error code.</p>
+	<div id="tab:errors">
+		<table>
+			<caption></caption>
+			<thead>
+				<tr>
+					<th style="text-align: left;">code</th>
+					<th style="text-align: left;">error</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: left;">0x01u</td>
+					<td style="text-align: left;">HEADER_CORRUPTED The <span
+							class="math inline"><em>c</em><em>r</em><em>c</em>_<em>h</em><em>e</em><em>a</em><em>d</em><em>e</em><em>r</em></span>
+						contained in the last two bytes of the header does not match that
+						calculated during the unmarshal of the header.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">0x02u</td>
+					<td style="text-align: left;">METADATA_CORRUPTED The <span
+							class="math inline"><em>c</em><em>r</em><em>c</em>_<em>m</em><em>e</em><em>t</em><em>a</em></span>
+						contained in the last two bytes of the metadata does not match that
+						calculated during the unmarshal of the metadata.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">0x03u</td>
+					<td style="text-align: left;">SERIES_CORRUPTED The <span
+							class="math inline"><em>c</em><em>r</em><em>c</em>_<em>s</em><em>e</em><em>r</em><em>i</em><em>e</em><em>s</em></span>
+						contained in the last two bytes of each series does not match that
+						calculated during the unmarshal of each series.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">0x04u</td>
+					<td style="text-align: left;">ZERO_REPEATED_SERIES The field ‘repeated’
+						in a series is set to 0. Tipically this is caused during the add_series
+						operation.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">0x05u</td>
+					<td style="text-align: left;">EMPTY_SERIES You are trying to delete a
+						series, but there are none.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">0x06u</td>
+					<td style="text-align: left;">TIME_OUT_OF_BOUND You are trying to select
+						a series (tipically for update), by specifying a time (in seconds) that
+						is greater than the ‘period_sec’ contained in the metadata section.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">0x07u</td>
+					<td style="text-align: left;">ADF_ADDITIVE_TABLE_OVERFLOW While
+						reindexing the additives the program is trying to resize the additives’
+						lookup table, but it is too big. This should never happen, except for
+						embedded systems running on very tiny chips.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">0xFFFFu</td>
+					<td style="text-align: left;">RUNTIME_ERROR It is the most generic error
+						code. It can be caused by any operation that does not concern directly
+						any operation performed by the user on the ADF data</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>
