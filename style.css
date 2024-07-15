@@ -6,7 +6,7 @@
 	--menu-height: 70px;
 	--menu-font-color: #616161e3;
 	--default-font-color: #424242;
-	--hr-color: #e2e2e24f;
+	--hr-color: #dfdfdf37;
 	--table-border: rgba(198, 198, 198, 0.61);
 	--default-font-size: 18px;
 	--default-font-family: Helvetica Neue;
@@ -18,8 +18,8 @@ body {
 	font-size: var(--default-font-size);
 	color: var(--default-font-color);
 	margin: 0;
-	padding-left: 50px;
-	padding-right: 50px;
+	padding-left: 150px;
+	padding-right: 150px;
 }
 
 .landing-section {
@@ -93,7 +93,7 @@ body {
 	font-weight: 400;
 }
 
-.product-section li {
+.subsection li {
 	list-style-type: 'ø ';
 }
 
@@ -131,8 +131,8 @@ tbody {
 th {
 	border-top: 2px solid var(--table-border);
 	border-bottom: 2px solid var(--table-border);
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	font-weight: 400;
 	letter-spacing: 1px;
 }
@@ -144,6 +144,13 @@ td {
 	font-size: 18px;
 	padding-left: 5px;
 	padding-right: 5px;
+	padding-bottom: 20px;
+	margin-top: 20px;
+}
+
+.style-anchor {
+	color: var(--menu-font-color);
+	text-decoration: underline;
 }
 
 check {
@@ -171,6 +178,7 @@ hr {
 .quotation {
 	font-style: italic;
 	margin-left: 50px;
+	margin-right: 50px;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	font-family: Didot;
@@ -216,12 +224,14 @@ footer {
 	column-gap: 50px;
 	justify-content: center;
 	align-items: center;
+	margin-top: 70px;
 }
 
 .card-desc h2 {
 	color: rgb(146, 146, 146);
 	margin-top: 0;
 	margin-bottom: 10px;
+	text-align: center;
 }
 
 .card-desc a {
@@ -279,18 +289,18 @@ footer {
 
 .chart img {
 	max-width: 900px;
-	width: 50%;
+	width: 60%;
 	border-style: solid;
 	border-radius: 20px;
 	border-color: #f57d924d;
 	border-width: 1px;
 }
 
-.product-section {
+.subsection {
 	margin-top: 50px;
 }
 
-.product-section li {
+.subsection li {
 	margin: 15px 0;
 }
 
@@ -306,21 +316,21 @@ ol li {
 	font-size: 25px;
 }
 
-.product-title {
+.subsection-title {
 	display: flex;
 	align-items: center;
 	column-gap: 10px;
 	justify-content: center;
 	border-bottom: #3196cd;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	border-bottom-style: inset;
 	width: fit-content;
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 10px;
 }
 
-.product-title span {
+.subsection-title span {
 	font-size: 20px;
 	font-weight: 300;
 	letter-spacing: 1.5px;
@@ -346,6 +356,7 @@ ol li {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-top: calc(var(--menu-height) + 10px);
 }
 
 .schema img {
@@ -353,7 +364,41 @@ ol li {
 	margin-bottom: 30px;
 }
 
+.badge-section {
+	display: flex;
+	column-gap: 100px;
+	justify-content: space-evenly;
+	align-items: start;
+	padding-top: 100px;
+	padding-bottom: 100px;
+	padding-left: 50px;
+	padding-right: 50px;
+	background: cornsilk;
+	border-radius: 20px;
+}
+
+.badge-section img {
+	width: 200px;
+}
+
+.badge-bullet {
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+	align-items: center;
+}
+
+.badge-bullet-label {
+	text-align: center;
+	font-size: 35px;
+	max-width: 300px
+}
+
 @media only screen and (max-width: 780px) {
+	:root {
+		--default-font-size: 16px;
+	}
+
 	body {
 		padding-left: 5px;
 		padding-right: 5px;
@@ -414,13 +459,13 @@ ol li {
 		flex-direction: column;
 		column-gap: unset;
 		row-gap: 50px;
+		margin-top: unset;
 	}
 
 	.card-desc h2 {
 		color: rgb(146, 146, 146);
 		margin-top: 0;
 		margin-bottom: 10px;
-
 		text-align: center;
 	}
 
@@ -437,6 +482,7 @@ ol li {
 
 	.quotation {
 		margin-left: 15px;
+		margin-right: unset;
 	}
 
 	.statement {
@@ -444,7 +490,7 @@ ol li {
 		padding-right: 10%;
 	}
 
-	.product-title {
+	.subsection-title {
 		margin-left: 20px;
 		margin-bottom: 40px;
 		padding-bottom: 10px;
@@ -506,5 +552,24 @@ ol li {
 	.roadmap-diagram img {
 		width: 100%;
 		max-width: unset;
+	}
+
+	.badge-section {
+		display: flex;
+		flex-direction: column;
+		column-gap: unset;
+		row-gap: 50px;
+		margin-top: 50px;
+		margin-bottom: 50px;
+		align-items: center;
+	}
+
+	.badge-section img {
+		width: 150px;
+	}
+
+	.badge-bullet-label {
+		font-size: 30px;
+		max-width: 250px
 	}
 }
