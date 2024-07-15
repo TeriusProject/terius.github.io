@@ -15,7 +15,7 @@
 			<li> <a href="#goals">Goals</a> </li>
 			<li> <a href="#product">Product</a> </li>
 			<li> <a href="#roadmap">Roadmap</a> </li>
-			<li> <a href="#standards">Standards</a> </li>
+			<li> <a href="#standard">Standard</a> </li>
 			<li> <a href="#about">About us</a> </li>
 		</ul>
 	</div>
@@ -48,13 +48,13 @@
 			<span>Terius Database</span>
 		</div>
 		<p>
-			Un Database distribuito che possa contenere il maggior numero
-			possibile di informazioni agricole <em>affidabili</em>,
-			<em>testate</em>, e formattate in un formato <em>standard (ADF)</em>.
-			Questo database deve poter essere iterrogato sia tramite API pubbliche, 
-			che tramite un'apposita interfaccia web, che possa visualizzare i dati 
-			in maniera interattiva tramite dashboard di grafici e tabelle. Integrato
-			con il database deve essere presente anche un servizio di reportistica.
+			A distributed Database that can contain a <em>reliable</em>, <em>tested</em>, and standard-formatted
+			agricultural information. This database must be able to be queried either through public APIs
+			or through a web interface that can display data interactively through graph and table dashboards.
+			Integrated with the database must also be a reporting service as well.
+		</p>
+		<p>
+			...
 		</p>
 		<div class="product-subsection">
 			Market placement
@@ -69,41 +69,48 @@
 			<span>Terius AI Engine</span>
 		</div>
 		<p>
-			Un modello cloud on-demand che permette di
-			<ul>
-				<li>Automatizzare completamente serre e coltivazioni</li>
-				<li>Fare simulazioni per testare la crescita di una coltura in un ambiente arbitrario</li>
-				<li>Determinare quali siano le condizioni ambientali ottimali per una data coltura, sualla base delle analisi condotte sui dati immagazzinati in Terius Database</li>
-				<li></li>
-			</ul> 
+			An on-demand cloud model that allows you to
+		<ul>
+			<li>Completely automate greenhouses and crops</li>
+			<li>Simulate the growth of a crop under arbitrarily given environmental conditions</li>
+			<li>Determine what the optimal environmental conditions are for a given crop, based on analyses conducted on
+				data stored in Terius Database</li>
+		</ul>
 		</p>
 	</div>
 	<div class="product-section">
 		<div class="product-title">
 			<img class="product-badge unselectable" src="./img/cloud.png" />
-			<span>Final destination</span>
+			<span>Comprehensive cloud</span>
 		</div>
+		<p>
+			An all-in-one Platform that allows entrabi services (Terius DB and Terius AI) to be integrated.
+		</p>
 		<div class="schema-container">
 			<div class="schema">
 				<img src="./img/server-based.png" />
 				<div class="schema-caption">
-					prova prova prova prova prova prova prova prova
+					A cloud infrastructure that is able to provide information to everyone: from final customers to
+					researchers and industry.
 				</div>
 			</div>
 			<hr>
 			<div class="schema">
 				<img src="./img/p2p.png" />
 				<div class="schema-caption">
-					prova prova prova prova prova prova prova prova prova prova prova prova
+					This is an example of the P2P feature within Terius Network. Fully autonomous greenhouses (like this
+					two prototypes) must be able to talk to each other, sharing thier own data.
 				</div>
 			</div>
 		</div>
 	</div>
 	<hr>
 	<div class="section" id="roadmap">Roadmap</div>
-	Nella tabella qui sotto vengono ricapitolati gli sviluppi portati a termine, e la roadmap dei prossimi. Per ciascuno
-	viene fornita una descrizione sommaria ed una stima delle tempistiche. A mano a mano che vengono sviluppate nuove
-	features, verranno aggiunte sezioni a questa pagina web per descriverne dettagliatamente il funzionamento.
+	<p>
+		The table below summarizes the developments completed, and the roadmap for the next ones. A summary description
+		and estimated timeline is provided for each. As new features are developed, sections will be added to this web
+		page to describe them in detail.
+	</p>
 	<table>
 		<thead>
 			<tr>
@@ -120,15 +127,15 @@
 				<td>
 					<check>&check;</check>
 				</td>
-				<td></td>
+				<td>A format to structure, store and share agricolture data</td>
 			</tr>
 			<tr>
 				<td>Design a centralized database</td>
-				<td>1 month</td>
+				<td>2 &half; months</td>
 				<td>
 					<check>&raquo;</check>
 				</td>
-				<td></td>
+				<td>Symbolic specifications of Terius Database</td>
 			</tr>
 			<tr>
 				<td>Collecting data</td>
@@ -136,7 +143,23 @@
 				<td>
 					<check>&times;</check>
 				</td>
-				<td>We need to collect data from public datasources, and translate them into ADF format</td>
+				<td>Collecting data from public datasources, and translate them into ADF format</td>
+			</tr>
+			<tr>
+				<td>Cloud infrastructure</td>
+				<td>3 months</td>
+				<td>
+					<check>&times;</check>
+				</td>
+				<td>Design and implementation of the distributed database symbolically specified before</td>
+			</tr>
+			<tr>
+				<td>RL model</td>
+				<td>1 year</td>
+				<td>
+					<check>&times;</check>
+				</td>
+				<td></td>
 			</tr>
 		</tbody>
 	</table>
@@ -151,20 +174,45 @@
 			<check>&times;</check> To do
 		</div>
 	</div>
-	Alcune di queste attività possono essere portate avanti (in tutto o in parte) in parallelo
+	<p>
+		Qui di seguito si può vedere il diagramma della pianificazione delle attività elencate nella tabella sopra.
+		Alcune di queste possono essere svolte (in tutto o in parte) in parallelo.
+	</p>
+	<div class="roadmap-diagram">
+		<img src="./img/roadmap.png" />
+	</div>
 	<hr>
-	<div class="section" id="standards">Standards</div>
+	<div class="section" id="standard">Standard</div>
+	<p>
+		Lo standard era sicuramente la cosa da cui partire. È infatti fondamentale per tutto il resto del lavoro avere
+		una solida base su cui poggiare tutto il resto del sistema. L'encoding è il vero pilastro dietro all'accumulo,
+		alla categorizzazione e all'analisi dei dati. Senza un buon sistema di encoding non è possibile parlare di
+		"rivoluzione IT" di un certo settore.
+	</p>
+	<p>
+		Tutti i settori in cui la rivoluzione IT è iniziata, o è tutt'ora in corso, hanno sviluppato un qualche formato
+		standard per poter immagazzinare e condividere i dati in question. Pensiamo soltanto ai formati di encoding
+		delle immagini digitali. Senza questi encoding non esisterebbe la grafica così come oggi la conosciamo. E non
+		esisterebbero nemmeno gli algoritmi generativi di text-to-image o di image classification.
+	</p>
+	<p>
+		Lo stesso discorso vale per i documenti testuali.
+	</p>
 	<div class="quotation">
 		ADF will be to the automation of agriculture what UNICODE was to the digitization of writing and HTML was to
 		the Web.
 	</div>
-	<a href="./format/format.html">Here</a> you can find the official specification of the ADF format.
+	<p>
+		You can find the (full) official specification of the ADF format <a href="./format/format.html">here</a>.
+	</p>
 	<hr>
 	<div class="section" id="about">About</div>
 	<p>
 		Al momento, Terius è ancora un progetto indipendente. Le risorse che abbiamo sono limitate, e siamo sempre alla
 		ricerca di finanziamenti e di sponsorizzazioni. In particolare, sarebbe bello riuscire ad ottenere un
 		finanziamento per poter diventare una startup autonoma.
+	</p>
+	<p>
 		Ogni aiuto in qualsiasi forma è sempre molto gradito :)
 	</p>
 	<p>
