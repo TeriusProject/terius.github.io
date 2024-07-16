@@ -160,11 +160,14 @@ check {
 
 .roadmap-diagram {
 	display: flex;
-	justify-content: center;
+    flex-direction: column;
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .roadmap-diagram img {
-	max-width: 60%;
+	max-width: -webkit-fill-available;
 }
 
 hr {
@@ -195,8 +198,8 @@ hr {
 	-webkit-text-fill-color: transparent;
 	font-size: 25px;
 	font-style: oblique;
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 	text-align: center;
 }
 
@@ -264,6 +267,13 @@ footer {
 	align-items: center;
 	column-gap: 10px;
 	cursor: pointer;
+}
+
+.picture-caption {
+	margin-left: 10%;
+	margin-right: 10%;
+	text-align: justify;
+	font-size: var(--default-caption-font-size);
 }
 
 .external-links {
@@ -342,9 +352,7 @@ ol li {
 
 .schema-container {
 	display: flex;
-	justify-content: space-evenly;
 	align-items: end;
-	column-gap: 70px;
 }
 
 .schema-container hr {
@@ -373,7 +381,7 @@ ol li {
 	padding-bottom: 100px;
 	padding-left: 50px;
 	padding-right: 50px;
-	background: cornsilk;
+	background: rgba(227, 227, 227, 0.876);
 	border-radius: 20px;
 }
 
@@ -390,8 +398,16 @@ ol li {
 
 .badge-bullet-label {
 	text-align: center;
-	font-size: 35px;
-	max-width: 300px
+    font-size: 25px;
+    max-width: 300px;
+    font-stretch: expanded;
+    font-weight: 200;
+}
+
+.badge-bullet-body {
+	font-size: calc(var(--default-font-size) + 2px);
+    font-weight: 200;
+    letter-spacing: 1px;
 }
 
 @media only screen and (max-width: 780px) {
@@ -400,13 +416,8 @@ ol li {
 	}
 
 	body {
-		padding-left: 5px;
-		padding-right: 5px;
-	}
-
-	p {
-		padding-left: 15px;
-		padding-right: 15px;
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 
 	.menu {
@@ -491,7 +502,7 @@ ol li {
 	}
 
 	.subsection-title {
-		margin-left: 20px;
+		margin-left: unset;
 		margin-bottom: 40px;
 		padding-bottom: 10px;
 		justify-content: unset;
@@ -532,7 +543,7 @@ ol li {
 		margin-top: 50px;
 	}
 
-	.schema-caption {
+	.picture-caption {
 		margin-left: 10%;
 		margin-right: 10%;
 		text-align: justify;
@@ -549,9 +560,8 @@ ol li {
 		max-width: 300px;
 	}
 
-	.roadmap-diagram img {
-		width: 100%;
-		max-width: unset;
+	.roadmap-diagram {
+		max-width: 100%;
 	}
 
 	.badge-section {
@@ -562,6 +572,8 @@ ol li {
 		margin-top: 50px;
 		margin-bottom: 50px;
 		align-items: center;
+		background: rgba(227, 227, 227, 0.876);
+		border-radius: unset;
 	}
 
 	.badge-section img {
