@@ -201,6 +201,7 @@ hr {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	text-align: center;
+	font-stretch: extra-expanded;
 }
 
 footer {
@@ -418,6 +419,10 @@ ol li {
 	body {
 		padding-left: 20px;
 		padding-right: 20px;
+	}
+
+	p {
+		text-align: justify;
 	}
 
 	.menu {
