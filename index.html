@@ -2,8 +2,11 @@
 <html lang="en">
 
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description"
+		content="Terius is a project that aims to collect and structure data concerning agriculture, in order to improve agrotechnology research.">
+	<meta name="googlebot" content="notranslate">
 	<title>Terius</title>
 	<link rel="stylesheet" href="style.css">
 </head>
@@ -24,20 +27,32 @@
 	</div>
 	<div class="section" id="goals">Goals</div>
 	<p>
-		There are three key point 
+		The ultimate goal of this project is to systematize agricultural knowledge in order to boost automation in
+		agronomic and agrotechnology research. To achieve this, we have identified a three-step path. Each of these
+		steps constitutes a <em>necessary partial objective</em> of the entire project. The three steps are as follows.
 	</p>
 	<ol>
-		<li> <b>Build a <em>standard</em> for agriculture data.</b> You can find more on this <a href="#standard" class="style-anchor">here</a> </li>
+		<li>
+			<b>Build a <em>standard</em> for agriculture data.</b> You can find more on this <a href="#standard"
+				class="style-anchor">here</a>
+		</li>
 		<div class="quotation">
-			Building this standard means laying the foundation stone for an IT revolution, because standards 
+			Building this standard means laying the foundation stone for an IT revolution in agriculture.
 		</div>
-		<li> <b>Make reliable agricultural knowledge <em>available</em> for <em>anyone</em>.</b> <a href="#terius-database" class="style-anchor">here</a> </li>
+		<li>
+			<b>Make reliable agricultural knowledge <em>available</em> for <em>anyone</em>.</b> This is the first
+			product we are implementing. For more information, see <a href="#terius-database"
+				class="style-anchor">here</a>
+		</li>
 		<div class="quotation">
 			Technology is data-driven. To digitize an industry you have to start with data.
 		</div>
-		<li> <b>Improve agriculture efficiency by speeding up agrotechnology reasearch.</b> <a href="#terius-engine" class="style-anchor">here</a> </li>
+		<li>
+			<b>Improve agriculture efficiency by speeding up agrotechnology reasearch.</b> For a detailed description,
+			see <a href="#terius-engine" class="style-anchor">here</a>
+		</li>
 		<div class="quotation">
-
+			Let's help scientific knowledge expand by making it easier to share.
 		</div>
 	</ol>
 	<p>We can summarize our general approach with the following statement</p>
@@ -50,8 +65,12 @@
 	</div>
 	<div class="section" id="product">Product</div>
 	<p>
-		La proposta di Terius si compone principalmente di due servizi: un database distribuito, e un engine di machine
-		learning. Questi due servizi saranno disponibili sia singolarmente che in maniera integrata. Vediamo ora nel dettaglio le caratteristiche principali di entrambi e 
+		Terius' proposal mainly consists of two services: a distributed database, and a machine learning engine. These
+		two services will be available either individually or in an integrated manner. Let us now look in detail at the
+		main features of both, <a href="#terius-database" class="style-anchor">Terius Database</a> and <a
+			href="#terius-engine" class="style-anchor">Terius Engine</a>. In the third section (<a class="style-anchor"
+			href="#cloud">Comprehensive cloud</a>), we will see the outline of a possible intrgeation between these two
+		services in order to offer a complete product.
 	</p>
 	<div class="subsection">
 		<div id="terius-database" class="subsection-title">
@@ -68,10 +87,11 @@
 			<div class="badge-bullet">
 				<img class="unselectable" src="./img/db-badge.png" />
 				<div class="badge-bullet-label">
-					Wide and reliable database
+					Reliable database
 				</div>
 				<div class="badge-bullet-body">
-					Get access to reliable data about crops.
+					Get access to a wide database, with tons of data about crops. Public APIs are available as well as a
+					web user interface.
 				</div>
 			</div>
 			<div class="badge-bullet">
@@ -80,7 +100,8 @@
 					Interactive dashboard
 				</div>
 				<div class="badge-bullet-body">
-					Data can be visually organized to compose some elegant and interactive dashboards. Here you have all the most advanced features...
+					Data can be visually organized to compose some elegant and interactive dashboards, where you can
+					visualize your data with custom charts and tables.
 				</div>
 			</div>
 			<div class="badge-bullet">
@@ -89,7 +110,7 @@
 					Reports
 				</div>
 				<div class="badge-bullet-body">
-					...
+					A powerful and flexible engine to print, edit, and schedule reports. 
 				</div>
 			</div>
 		</div>
@@ -118,7 +139,7 @@
 		</p>
 	</div>
 	<div class="subsection">
-		<div class="subsection-title">
+		<div id="cloud" class="subsection-title">
 			<img class="product-badge unselectable" src="./img/cloud.png" />
 			<span>Comprehensive cloud</span>
 		</div>
@@ -130,7 +151,7 @@
 		<p>
 			In <a href="#figure2" class="style-anchor">Figure 2</a> we can see the interaction between two smart
 			greenhouses. The same peer-to-peer network can be implemented with computers (instead of Terius
-			greenhouses), as you casn see in the left client of <a href="#figure1" class="style-anchor">Figure 1</a>.
+			greenhouses), as you can see in the left client of <a href="#figure1" class="style-anchor">Figure 1</a>.
 		</p>
 		<div class="schema-container">
 			<div id="figure1" class="schema">
@@ -204,7 +225,7 @@
 				<td>
 					<check>&times;</check>
 				</td>
-				<td>Actor-critic algorithm </td>
+				<td>Actor-critic algorithm looking for the optimum(s) environmental resources for each crop</td>
 			</tr>
 		</tbody>
 	</table>
@@ -233,10 +254,9 @@
 	<div class="section" id="standard">Standard</div>
 	<p>
 		Standards definition was definitely the thing to start with. It is in fact essential for all the rest of the
-		work to have a
-		solid foundation on which to rest the rest of the system. Encoding is the real pillar behind data accumulation,
-		categorization and analysis. Without a good encoding system it is not possible to talk about an "IT revolution"
-		in a certain sector.
+		work to have a solid foundation on which to rest the rest of the system. Encoding is the real pillar behind data
+		accumulation, categorization and analysis. Without a good encoding system it is not possible to talk about an
+		"IT revolution" in a certain sector.
 	</p>
 	<p>
 		All sectors where the IT revolution has begun, or is still ongoing, have developed some standard format to be
@@ -245,16 +265,14 @@
 		classification algorithms.
 	</p>
 	<p>
-		Lo stesso discorso vale per i documenti testuali. I sistemi di encoding dei caratteri hanno permesso
-		la creazione, l'archiviazione e la condivisione digitale di testi scritti.
+		The same is true for text documents. Character encoding systems have enabled the creation, storage and digital
+		sharing of written text. Character encoding systems are fundamental, then, to all products and services that
+		enable us to handle written text, from word processing programs, to NLP algorithms, to LLMs.
 	</p>
 	<div class="quotation">
 		ADF will be to the automation of agriculture what UNICODE was to the digitization of writing and HTML was to
 		the Web.
 	</div>
-	<p>
-		You can find the (full) official specification of the ADF format <a class="style-anchor" href="./format/format.html">here</a>.
-	</p>
 	<hr>
 	<div class="section" id="about">About us</div>
 	<p>
@@ -263,7 +281,7 @@
 		become a startup.
 	</p>
 	<p>
-		Any help in any form is always very welcome :)
+		Any help in any form is always very welcome, feel free to contact me :)
 	</p>
 	<p>
 		If you are a programmer or systems engineer and would like to contribute directly to the project, you can find

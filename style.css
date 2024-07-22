@@ -22,6 +22,10 @@ body {
 	padding-right: 150px;
 }
 
+p {
+	line-height: 25px;
+}
+
 .landing-section {
 	display: flex;
 	flex-direction: column;
@@ -366,6 +370,7 @@ ol li {
 	justify-content: center;
 	align-items: center;
 	margin-top: calc(var(--menu-height) + 10px);
+	width: 50%;
 }
 
 .schema img {
@@ -409,6 +414,29 @@ ol li {
 	font-size: calc(var(--default-font-size) + 2px);
     font-weight: 200;
     letter-spacing: 1px;
+	text-align: center;
+}
+
+@media only screen and (max-width: 1200px) {
+	.badge-section {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.schema-container {
+		flex-direction: column;
+		align-items: center;
+		column-gap: unset;
+		row-gap: 50px;
+	}
+
+	.schema {
+		width: 80%;
+	}
+
+	.schema img {
+		max-width: 500px;
+	}
 }
 
 @media only screen and (max-width: 780px) {
