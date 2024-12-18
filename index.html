@@ -1,12 +1,11 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description"
-		content="Terius is a project that aims to collect and structure data concerning agriculture, in order to improve agrotechnology research.">
+	<meta name="description" content="Terius is a project that aims to collect and structure data concerning agriculture, in order to improve agrotechnology research.">
 	<meta name="googlebot" content="notranslate">
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 	<title>Terius</title>
 	<link rel="stylesheet" href="style.css">
 </head>
@@ -16,9 +15,9 @@
 		<ul>
 			<li> <a href="#terius"><img src="./img/menu-logo.png" /></a> </li>
 			<li> <a href="#goals">Goals</a> </li>
-			<li> <a href="#product">Product</a> </li>
-			<li> <a href="#roadmap">Roadmap</a> </li>
 			<li> <a href="#standard">Standard</a> </li>
+			<li> <a href="#roadmap">Roadmap</a> </li>
+			<li> <a href="#product">Product</a> </li>
 			<li> <a href="#about">About us</a> </li>
 		</ul>
 	</div>
@@ -57,11 +56,138 @@
 	</ol>
 	<p>We can summarize our general approach with the following statement</p>
 	<div class="statement">
-		Centralize information
-		<br />
-		for
-		<br />
-		decentralize production
+		Centralize information for <b>optimize</b> and <b>decentralize</b> production
+	</div>
+	<div class="section" id="standard">Standard</div>
+	<p>
+		Standards definition was definitely the thing to start with. It is indeed essential to build
+		a solid foundation on which the whole system can rely. <b>Encoding</b> is the real pillar behind data
+		accumulation, classification and analysis. Without a good encoding system it is not possible to talk about an
+		"IT revolution" in a certain sector, e.g. agriculture.
+	</p>
+	<p>
+		All sectors where the IT revolution has begun, or is still ongoing, have developed some standard format to be
+		able to store and share data. Just think of digital image encoding formats. Without these encodings,
+		digital graphics as we know them today would not exist. Nor would exist generative text-to-image or image
+		classification algorithms.
+	</p>
+	<p>
+		The same is true for text documents. Character encoding systems have enabled the creation, storage and digital
+		sharing of written text. Character encoding systems are fundamental, then, to all products and services that
+		enable us to handle written text, from word processing programs, to NLP algorithms, to LLMs.
+	</p>
+	<div class="quotation">
+		ADF will be to the automation of agriculture what UNICODE was to the digitization of writing and HTML was to
+		the Web.
+	</div>
+	<div class="subsection">
+		<div id="adf" class="subsection-title">
+			<span>ADF open format</span>
+		</div>
+		<p>
+			The main purpose of this format definition is to encode agriculture data.
+		</p>
+		<div class="infographic">
+			<img src="img/scheme.png" />
+			<div class="picture-caption">
+				Figure 4. 
+			</div>
+		</div>
+		<div class="statement">
+			ADF is the format that agriculture data needs right now: <b>open</b>, <b>portable</b> and <b>extensible</b>
+		</div>
+		<p>
+			You can find the implementation here <a href="https://github.com/TeriusProject/adf" class="style-anchor"
+				target="_blank">in this repository</a>
+		</p>
+	</div>
+	<div class="section" id="roadmap">Roadmap</div>
+	<p>
+		The table below summarizes the developments completed, and the roadmap for the next ones. A summary description
+		and estimated timeline is provided for each. As new features are developed, sections will be added to this web
+		page to describe them in detail.
+	</p>
+	<table>
+		<thead>
+			<tr>
+				<th>Task</th>
+				<th>ETA</th>
+				<th>Done</th>
+				<th>What is this?</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Standard format for agricultural data</td>
+				<td>2 months</td>
+				<td>
+					<check>&check;</check>
+				</td>
+				<td>A format to structure, store and share agricolture data</td>
+			</tr>
+			<tr>
+				<td>Visualization tool for agriculturaldata</td>
+				<td>2 &half; months</td>
+				<td>
+					<check>&check;</check>
+				</td>
+				<td>A portable web application to visualize ADF data and interact with it</td>
+			</tr>
+			<tr>
+				<td>Collecting data</td>
+				<td>6 month</td>
+				<td>
+					<check>&raquo;</check>
+				</td>
+				<td>Collecting data from public datasources, and translate them into ADF format</td>
+			</tr>
+			<tr>
+				<td>Design a centralized database</td>
+				<td>2 &half; months</td>
+				<td>
+					<check>&times;</check>
+				</td>
+				<td>Symbolic specifications of Terius Database</td>
+			</tr>
+			<tr>
+				<td>Cloud infrastructure</td>
+				<td>3 months</td>
+				<td>
+					<check>&times;</check>
+				</td>
+				<td>Design and implementation of the distributed database symbolically specified before</td>
+			</tr>
+			<tr>
+				<td>RL model</td>
+				<td>1 year</td>
+				<td>
+					<check>&times;</check>
+				</td>
+				<td>Actor-critic algorithm looking for the optimum(s) environmental resources for each crop</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="legend">
+		<div class="legend-item">
+			<check>&check;</check> Done
+		</div>
+		<div class="legend-item">
+			<check>&raquo;</check> Ongoing
+		</div>
+		<div class="legend-item">
+			<check>&times;</check> To do
+		</div>
+	</div>
+	<p>
+		Below you can see the schedule diagram of the activities listed in the table above. Some of these can be carried
+		out (in whole or in part) in parallel.
+	</p>
+	<div class="roadmap-diagram">
+		<img src="./img/roadmap.png" />
+		<div class="picture-caption">
+			Figure 3. This represents the roadmap of the first 15 months of the project. Currently have implemented the
+			first feature (ADF format), and we are starting to write the TLA+ specifications for the database.
+		</div>
 	</div>
 	<div class="section" id="product">Product</div>
 	<p>
@@ -170,120 +296,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="section" id="roadmap">Roadmap</div>
-	<p>
-		The table below summarizes the developments completed, and the roadmap for the next ones. A summary description
-		and estimated timeline is provided for each. As new features are developed, sections will be added to this web
-		page to describe them in detail.
-	</p>
-	<table>
-		<thead>
-			<tr>
-				<th>Task</th>
-				<th>ETA</th>
-				<th>Done</th>
-				<th>What is that?</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>Standard format for agricultural data</td>
-				<td>2 months</td>
-				<td>
-					<check>&check;</check>
-				</td>
-				<td>A format to structure, store and share agricolture data</td>
-			</tr>
-			<tr>
-				<td>Design a centralized database</td>
-				<td>2 &half; months</td>
-				<td>
-					<check>&raquo;</check>
-				</td>
-				<td>Symbolic specifications of Terius Database</td>
-			</tr>
-			<tr>
-				<td>Collecting data</td>
-				<td>1 month</td>
-				<td>
-					<check>&raquo;</check>
-				</td>
-				<td>Collecting data from public datasources, and translate them into ADF format</td>
-			</tr>
-			<tr>
-				<td>Cloud infrastructure</td>
-				<td>3 months</td>
-				<td>
-					<check>&times;</check>
-				</td>
-				<td>Design and implementation of the distributed database symbolically specified before</td>
-			</tr>
-			<tr>
-				<td>RL model</td>
-				<td>1 year</td>
-				<td>
-					<check>&times;</check>
-				</td>
-				<td>Actor-critic algorithm looking for the optimum(s) environmental resources for each crop</td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="legend">
-		<div class="legend-item">
-			<check>&check;</check> Done
-		</div>
-		<div class="legend-item">
-			<check>&raquo;</check> Ongoing
-		</div>
-		<div class="legend-item">
-			<check>&times;</check> To do
-		</div>
-	</div>
-	<p>
-		Below you can see the schedule diagram of the activities listed in the table above. Some of these can be carried
-		out (in whole or in part) in parallel.
-	</p>
-	<div class="roadmap-diagram">
-		<img src="./img/roadmap.png" />
-		<div class="picture-caption">
-			Figure 3. This represents the roadmap of the first 15 months of the project. Currently have implemented the
-			first feature (ADF format), and we are starting to write the TLA+ specifications for the database.
-		</div>
-	</div>
-	<div class="section" id="standard">Standard</div>
-	<p>
-		Standards definition was definitely the thing to start with. It is indeed essential to build
-		a solid foundation on which the whole system can rely. <b>Encoding</b> is the real pillar behind data
-		accumulation, classification and analysis. Without a good encoding system it is not possible to talk about an
-		"IT revolution" in a certain sector, e.g. agriculture.
-	</p>
-	<p>
-		All sectors where the IT revolution has begun, or is still ongoing, have developed some standard format to be
-		able to store and share data. Just think of digital image encoding formats. Without these encodings,
-		digital graphics as we know them today would not exist. Nor would exist generative text-to-image or image
-		classification algorithms.
-	</p>
-	<p>
-		The same is true for text documents. Character encoding systems have enabled the creation, storage and digital
-		sharing of written text. Character encoding systems are fundamental, then, to all products and services that
-		enable us to handle written text, from word processing programs, to NLP algorithms, to LLMs.
-	</p>
-	<div class="quotation">
-		ADF will be to the automation of agriculture what UNICODE was to the digitization of writing and HTML was to
-		the Web.
-	</div>
-	<div class="subsection">
-		<div id="adf" class="subsection-title">
-			<span>ADF open format</span>
-		</div>
-		<div class="statement">
-			ADF is the open format that agriculture needs right now: <b>portable</b> and <b>extensible</b>
-		</div>
-		<p>
-			You can find the implememntation here <a href="https://github.com/TeriusProject/adf" class="style-anchor"
-				target="_blank">in this repository</a>
-		</p>
 	</div>
 	<div class="section" id="about">About us</div>
 	<p>

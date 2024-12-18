@@ -343,6 +343,7 @@ ol li {
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 10px;
+	margin-bottom: 30px;
 }
 
 .subsection-title span {
@@ -415,6 +416,17 @@ ol li {
     font-weight: 200;
     letter-spacing: 1px;
 	text-align: center;
+}
+
+.infographic {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.infographic img {
+	width: 70%;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -616,5 +628,9 @@ ol li {
 	.badge-bullet-label {
 		font-size: 30px;
 		max-width: 250px
+	}
+
+	.infographic img {
+		width: 100%;
 	}
 }
